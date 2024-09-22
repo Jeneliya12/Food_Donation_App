@@ -25,6 +25,10 @@ class Donor extends User {
     }
 
     public void viewDonationStatus() {
+        for (Donation donation : donations) {
+            String status = donation.isclaimed() ? "Claimed" : "Available";
+            System.out.println("Donation ID: " + donation.getDonationId() + " - Status: " +status);
+        }
 
     }
 
