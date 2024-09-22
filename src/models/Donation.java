@@ -16,4 +16,12 @@ public class Donation {
         this.expirationDate = foodexpirationDate;
         this.isClaimed = false;
     }
+
+    public boolean isClaimed() {
+        return isClaimed;
+    }
+
+    public void setClaimed(boolean claimed) {
+        isClaimed = claimed;
+    }
 }
