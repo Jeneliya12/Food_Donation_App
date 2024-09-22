@@ -17,6 +17,10 @@ class Donor extends User {
         System.out.println("Donation registered successfully");
     }
     public void viewDonations() {
+        System.out.println("Your Donations:");
+        for (Donation donation : donations) {
+            System.out.println(donations);
+        }
 
     }
 
