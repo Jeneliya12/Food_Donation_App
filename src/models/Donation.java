@@ -1,7 +1,5 @@
 package models;
 
-import java.time.LocalDate;
-
 public class Donation {
     private int donationId;
     private String foodType;
