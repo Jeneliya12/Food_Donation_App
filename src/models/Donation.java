@@ -16,5 +16,4 @@ public class Donation {
         this.expirationDate = foodexpirationDate;
         this.isClaimed = false;
     }
-
 }
