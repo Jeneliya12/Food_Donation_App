@@ -1,4 +1,6 @@
-public class User {
+package models;
+
+abstract class User {
     protected int id;
     protected String name;
     protected String email;
@@ -10,4 +12,5 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public abstract void viewProfile();
 }
