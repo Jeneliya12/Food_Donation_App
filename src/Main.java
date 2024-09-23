@@ -43,8 +43,15 @@ public class Main {
         // Add the donation to the list
         donations.add(new Donation(donationId, foodType, quantity, unit, expirationDate));
 
-        // Create a recipient
-        Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
+        // Get recipient details from the user
+        System.out.println("Enter recipient ID:");
+        int recipientId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        System.out.println("Enter recipient name:");
+        String recipientName = scanner.nextLine();
+
+        Recipient recipient = new Recipient(recipientId, recipientName, "recipient@example.com", "password456");
         recipient.viewProfile();
 
         // View available donations
