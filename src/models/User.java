@@ -13,6 +13,18 @@ public abstract class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public void viewProfile() {
         System.out.println("Name: " + this.name);
         System.out.println("Email: " + getEmail());

@@ -12,13 +12,9 @@ public class Main {
     private static List<Recipient> recipients = new ArrayList<>();
 
     static {
-        // Hardcoded donors
         donors.add(new Donor(1, "Jenny", "jenny@gmail.com", "pwd123"));
-        donors.add(new Donor(2, "John", "john@example.com", "pwd456"));
 
-        // Hardcoded recipients
         recipients.add(new Recipient(1, "Milli", "milli@gmail.com", "pwd789"));
-        recipients.add(new Recipient(2, "Charity", "charity@example.com", "pwd000"));
     }
 
     public static void main(String[] args) {
@@ -64,8 +60,9 @@ public class Main {
         String password = scanner.nextLine();
 
         for (Donor donor : donors) {
-            if (donor.email.equals(email) && donor.password.equals(password)) {
-                System.out.println("Login successful! Welcome, " + donor.name);
+            // Use getEmail() instead of accessing email directly
+            if (donor.getEmail().equals(email) && donor.getPassword().equals(password)) {
+                System.out.println("Login successful! Welcome, " + donor.getName());
                 return donor;
             }
         }
@@ -81,8 +78,9 @@ public class Main {
         String password = scanner.nextLine();
 
         for (Recipient recipient : recipients) {
-            if (recipient.email.equals(email) && recipient.password.equals(password)) {
-                System.out.println("Login successful! Welcome, " + recipient.name);
+            // Use getEmail() instead of accessing email directly
+            if (recipient.getEmail().equals(email) && recipient.getPassword().equals(password)) {
+                System.out.println("Login successful! Welcome, " + recipient.getName());
                 return recipient;
             }
         }
@@ -90,6 +88,7 @@ public class Main {
         System.out.println("Invalid email or password.");
         return null;
     }
+
 
     private static void donorMenu(Donor donor, List<Donation> donations, Scanner scanner) {
         while (true) {

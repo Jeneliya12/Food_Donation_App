@@ -13,8 +13,8 @@ public class Recipient extends User {
 
     public void claimDonation(Donation donation) {
         if (!donation.isClaimed()) {
-            donation.setClaimed(true);
-            claimedDonations.add(donation); // Modify contents
+            donation.setClaimedBy(this);
+            claimedDonations.add(donation);
             System.out.println("Donation claimed successfully!");
         } else {
             System.out.println("The donation has already been claimed.");
@@ -33,17 +33,26 @@ public class Recipient extends User {
     }
 
     public void viewAvailableDonations(List<Donation> donations) {
-        System.out.println("Available Donations:");
-        if (donations.isEmpty()) {
-            System.out.println("No donations available.");
-            return;
-        }
+        System.out.println("\n=== Available Donations ===");
+
+        boolean availableDonationFound = false;
+
         for (Donation donation : donations) {
             if (!donation.isClaimed()) {
-                System.out.println(donation);
+                System.out.println("ID: " + donation.getDonationId());
+                System.out.println("Food Type: " + donation.getFoodType());
+                System.out.println("Quantity: " + donation.getQuantity() + " " + donation.getUnit());
+                System.out.println("Expiration Date: " + donation.getExpirationDate());
+                System.out.println("-------------------");
+                availableDonationFound = true;
             }
         }
+
+        if (!availableDonationFound) {
+            System.out.println("No available donations at the moment. All donations have been claimed.");
+        }
     }
+
 
     @Override
     public void viewProfile() {
