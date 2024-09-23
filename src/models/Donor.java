@@ -18,12 +18,17 @@ public class Donor extends User { // Ensure it's public
         System.out.println("Donation registered successfully");
     }
 
-    public void viewDonations() {
+    public void viewDonations(List<Donation> donations) {
         System.out.println("Your Donations:");
+        if (donations.isEmpty()) {
+            System.out.println("No donations found.");
+            return;
+        }
         for (Donation donation : donations) {
-            System.out.println(donation.toString());
+            System.out.println(donation);
         }
     }
+
 
     public void viewDonationStatus() {
         for (Donation donation : donations) {

@@ -14,7 +14,7 @@ public class Main {
         Donor donor = new Donor(1, "Alice", "alice@example.com", "password123");
         Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
 
-        // Register a donation for testing
+        // Register a couple of donations for testing
         donations.add(new Donation(1, "Apples", 10.0, "KG", LocalDate.of(2024, 10, 1)));
         donations.add(new Donation(2, "Bread", 5.0, "KG", LocalDate.of(2024, 9, 30)));
 
@@ -72,10 +72,14 @@ public class Main {
                     String unit = scanner.next();
                     System.out.print("Enter Expiration Date (YYYY-MM-DD): ");
                     LocalDate expirationDate = LocalDate.parse(scanner.next());
-                    donor.registerDonation(donationId, foodType, quantity, unit, expirationDate);
+
+                    // Create new donation and add it to the shared list
+                    Donation newDonation = new Donation(donationId, foodType, quantity, unit, expirationDate);
+                    donations.add(newDonation);
+                    System.out.println("Donation registered successfully");
                     break;
                 case 3:
-                    donor.viewDonations();
+                    donor.viewDonations(donations);
                     break;
                 case 4:
                     return; // Go back to main menu
