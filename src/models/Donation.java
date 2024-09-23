@@ -3,7 +3,7 @@ package models;
 import java.time.LocalDate;
 
 public class Donation {
-    private final int donationId; // Made final
+    private final int donationId;
     private final String foodType;
     private final double quantity;
     private final String unit;
@@ -11,7 +11,7 @@ public class Donation {
     private boolean isClaimed;
 
     public Donation(int donationId, String foodType, double quantity, String unit, LocalDate expirationDate) {
-        this.donationId = donationId; // Initialized in constructor
+        this.donationId = donationId;
         this.foodType = foodType;
         this.quantity = quantity;
         this.unit = unit;

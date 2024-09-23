@@ -13,5 +13,8 @@ public abstract class User {
         this.password = password;
     }
 
-    public abstract void viewProfile();
+    public void viewProfile() {
+        System.out.println("Name: " + this.name);
+        System.out.println("Email: " + getEmail());
+    };
 }

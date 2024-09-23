@@ -8,19 +8,27 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static List<Donor> donors = new ArrayList<>();
+    private static List<Recipient> recipients = new ArrayList<>();
+
+    static {
+        // Hardcoded donors
+        donors.add(new Donor(1, "Jenny", "jenny@gmail.com", "pwd123"));
+        donors.add(new Donor(2, "John", "john@example.com", "pwd456"));
+
+        // Hardcoded recipients
+        recipients.add(new Recipient(1, "Milli", "milli@gmail.com", "pwd789"));
+        recipients.add(new Recipient(2, "Charity", "charity@example.com", "pwd000"));
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Donation> donations = new ArrayList<>();
-        Donor donor = new Donor(1, "Alice", "alice@example.com", "password123");
-        Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
-
-//        donations.add(new Donation(1, "Apples", 10.0, "KG", LocalDate.of(2024, 10, 1)));
-//        donations.add(new Donation(2, "Bread", 5.0, "KG", LocalDate.of(2024, 9, 30)));
 
         while (true) {
             System.out.println("\n=== Food Donation App ===");
-            System.out.println("1. Donor Options");
-            System.out.println("2. Recipient Options");
+            System.out.println("1. Donor Login");
+            System.out.println("2. Recipient Login");
             System.out.println("3. Exit");
             System.out.print("Please choose an option: ");
 
@@ -29,10 +37,16 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    donorMenu(donor, donations, scanner);
+                    Donor donor = loginDonor(scanner);
+                    if (donor != null) {
+                        donorMenu(donor, donations, scanner);
+                    }
                     break;
                 case 2:
-                    recipientMenu(recipient, donations, scanner);
+                    Recipient recipient = loginRecipient(scanner);
+                    if (recipient != null) {
+                        recipientMenu(recipient, donations, scanner);
+                    }
                     break;
                 case 3:
                     System.out.println("Thank you for using the Food Donation App!");
@@ -41,6 +55,40 @@ public class Main {
                     System.out.println("Invalid option. Please try again.");
             }
         }
+    }
+
+    private static Donor loginDonor(Scanner scanner) {
+        System.out.print("Enter your email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter your password: ");
+        String password = scanner.nextLine();
+
+        for (Donor donor : donors) {
+            if (donor.email.equals(email) && donor.password.equals(password)) {
+                System.out.println("Login successful! Welcome, " + donor.name);
+                return donor;
+            }
+        }
+
+        System.out.println("Invalid email or password.");
+        return null;
+    }
+
+    private static Recipient loginRecipient(Scanner scanner) {
+        System.out.print("Enter your email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter your password: ");
+        String password = scanner.nextLine();
+
+        for (Recipient recipient : recipients) {
+            if (recipient.email.equals(email) && recipient.password.equals(password)) {
+                System.out.println("Login successful! Welcome, " + recipient.name);
+                return recipient;
+            }
+        }
+
+        System.out.println("Invalid email or password.");
+        return null;
     }
 
     private static void donorMenu(Donor donor, List<Donation> donations, Scanner scanner) {
@@ -94,7 +142,8 @@ public class Main {
             System.out.println("1. View Profile");
             System.out.println("2. View Available Donations");
             System.out.println("3. Claim Donation");
-            System.out.println("4. Back to Main Menu");
+            System.out.println("4. View Claimed Donations");
+            System.out.println("5. Back to Main Menu");
             System.out.print("Please choose an option: ");
 
             int choice = scanner.nextInt();
@@ -118,7 +167,10 @@ public class Main {
                     }
                     break;
                 case 4:
-                    return; // Go back to main menu
+                    recipient.viewClaimedDonations();
+                    break;
+                case 5:
+                    return;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Donor extends User { // Ensure it's public
+public class Donor extends User {
     private final List<Donation> donations;
 
     public Donor(int id, String name, String email, String password) {
@@ -39,6 +39,8 @@ public class Donor extends User { // Ensure it's public
 
     @Override
     public void viewProfile() {
+        System.out.println("Donor Id: " + this.id);
         System.out.println("Donor Name: " + this.name);
+        System.out.println("Donor email " + this.email);
     }
 }
