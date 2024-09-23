@@ -1,34 +1,55 @@
+import models.Donor;
+import models.Recipient;
+import models.Donation;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        // Hardcoded credentials
-        String donorName = "Jenny";
-        String donorEmail = "jen@gmail.com";
-        String donorPassword = "psd123";
+        Scanner scanner = new Scanner(System.in);
 
-        String recipientName = "Milli";
-        String recipientEmail = "milli@gmail.com";
-        String recipientPassword = "psd456";
-
-        // Create some test donations
+        // Create a list to store donations
         List<Donation> donations = new ArrayList<>();
-        donations.add(new Donation(1, "Apples", 10.0, "KG", LocalDate.of(2024, 10, 1)));
-        donations.add(new Donation(2, "Bread", 5.0, "KG", LocalDate.of(2024, 9, 30)));
 
         // Create a donor
-        Donor donor = new Donor(1, donorName, donorEmail, donorPassword);
+        Donor donor = new Donor(1, "Alice", "alice@example.com", "password123");
         donor.viewProfile();
 
-        // Register a donation (you can add logic to this method later)
-        donor.registerDonation(3, "Oranges", 15.0, "KG", LocalDate.of(2024, 10, 5));
+        // Get donation details from the user
+        System.out.println("Enter donation ID:");
+        int donationId = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-        // View registered donations
-        donor.viewDonations();
+        System.out.println("Enter food type:");
+        String foodType = scanner.nextLine();
+
+        System.out.println("Enter quantity:");
+        double quantity = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline
+
+        System.out.println("Enter unit:");
+        String unit = scanner.nextLine();
+
+        System.out.println("Enter expiration date (YYYY-MM-DD):");
+        String dateInput = scanner.nextLine();
+        LocalDate expirationDate = LocalDate.parse(dateInput);
+
+        // Register the donation
+        donor.registerDonation(donationId, foodType, quantity, unit, expirationDate);
+
+        // Add the donation to the list
+        donations.add(new Donation(donationId, foodType, quantity, unit, expirationDate));
 
         // Create a recipient
-        Recipient recipient = new Recipient(2, recipientName, recipientEmail, recipientPassword);
+        Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
         recipient.viewProfile();
 
         // View available donations
         recipient.viewAvailableDonations(donations);
+
+        scanner.close();
     }
 }
