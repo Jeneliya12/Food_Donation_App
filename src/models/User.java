@@ -1,6 +1,6 @@
 package models;
 
-abstract class User {
+public abstract class User {
     protected int id;
     protected String name;
     protected String email;
@@ -12,5 +12,6 @@ abstract class User {
         this.email = email;
         this.password = password;
     }
+
     public abstract void viewProfile();
 }
