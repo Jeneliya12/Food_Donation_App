@@ -9,7 +9,7 @@ public class Donation {
     private final String unit;
     private final LocalDate expirationDate;
     private boolean isClaimed;
-    private Recipient claimedBy;
+    private Recipient claimedBy; // Add claimedBy field
 
     public Donation(int donationId, String foodType, double quantity, String unit, LocalDate expirationDate) {
         this.donationId = donationId;
@@ -18,6 +18,7 @@ public class Donation {
         this.unit = unit;
         this.expirationDate = expirationDate;
         this.isClaimed = false;
+        this.claimedBy = null; // Initially no recipient
     }
 
     public int getDonationId() {
@@ -40,25 +41,28 @@ public class Donation {
         return expirationDate;
     }
 
+    public boolean isClaimed() {
+        return isClaimed;
+    }
+
+    public void setClaimed(boolean claimed) {
+        this.isClaimed = claimed;
+    }
+
     public Recipient getClaimedBy() {
         return claimedBy;
     }
 
-    public void setClaimedBy(Recipient recipient) {
-        this.claimedBy = recipient;
+    public void setClaimedBy(Recipient claimedBy) {
+        this.claimedBy = claimedBy;
     }
 
-    public void setClaimed(boolean claimed) {
-        isClaimed = claimed;
-    }
-
-    public boolean isClaimed() {
-        return this.claimedBy != null;
-    }
     @Override
     public String toString() {
-        return "Donation ID: " + donationId + ", Food Type: " + foodType +
-                ", Quantity: " + quantity + " " + unit + ", Expiration Date: " + expirationDate +
-                ", Claimed: " + (isClaimed() ? "Yes" : "No");
+        return "Donation ID: " + donationId +
+                ", Food Type: " + foodType +
+                ", Quantity: " + quantity + " " + unit +
+                ", Expiration Date: " + expirationDate +
+                ", Claimed: " + isClaimed;
     }
 }

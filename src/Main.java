@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static List<Donor> donors = new ArrayList<>();
-    private static List<Recipient> recipients = new ArrayList<>();
+    private static final List<Donor> donors = new ArrayList<>();
+    private static final List<Recipient> recipients = new ArrayList<>();
 
     static {
         donors.add(new Donor(1, "Jenny", "jenny@gmail.com", "pwd123"));

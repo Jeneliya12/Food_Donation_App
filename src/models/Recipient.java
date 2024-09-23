@@ -13,8 +13,9 @@ public class Recipient extends User {
 
     public void claimDonation(Donation donation) {
         if (!donation.isClaimed()) {
-            donation.setClaimedBy(this);
-            claimedDonations.add(donation);
+            donation.setClaimedBy(this); // Set the claimed by recipient
+            donation.setClaimed(true); // Set claimed status
+            claimedDonations.add(donation); // Add to claimed list
             System.out.println("Donation claimed successfully!");
         } else {
             System.out.println("The donation has already been claimed.");
@@ -22,7 +23,7 @@ public class Recipient extends User {
     }
 
     public void viewClaimedDonations() {
-        System.out.println("Claimed Donations:");
+        System.out.println("\n=== Claimed Donations ===");
         if (claimedDonations.isEmpty()) {
             System.out.println("No claimed donations.");
             return;
@@ -52,7 +53,6 @@ public class Recipient extends User {
             System.out.println("No available donations at the moment. All donations have been claimed.");
         }
     }
-
 
     @Override
     public void viewProfile() {
