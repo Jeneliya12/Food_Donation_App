@@ -11,11 +11,23 @@ public class Recipient extends User {
     public void claimDonation(Donation donation) {
         if (!donation.isClaimed()) {
             donation.setClaimed(true);
+            claimedDonations.add(donation);
             System.out.println("Donation claimed successfully!");
         } else {
             System.out.println("The donation has already been claimed.");
         }
 
+    }
+
+    public void ViewClaimedDonation() {
+        System.out.println("Claimed Donations:");
+        if (claimedDonations.isEmpty()) {
+            System.out.println("No claimed donations.");
+            return;
+        }
+        for (Donation donation : claimedDonations) {
+            System.out.println(donation);
+        }
     }
 
     public void viewAvailableDonations(List<Donation> donations) {
