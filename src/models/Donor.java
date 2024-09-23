@@ -21,7 +21,7 @@ public class Donor extends User { // Ensure it's public
     public void viewDonations() {
         System.out.println("Your Donations:");
         for (Donation donation : donations) {
-            System.out.println("Donation ID: " + donation.getDonationId() + ", Food Type: " + donation.getFoodType());
+            System.out.println(donation.toString());
         }
     }
 

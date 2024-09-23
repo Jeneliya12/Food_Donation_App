@@ -17,14 +17,20 @@ public class Recipient extends User {
         }
 
     }
-    public void viewAvailableDonations(List<Donation> donations){
+
+    public void viewAvailableDonations(List<Donation> donations) {
         System.out.println("Available Donations:");
+        if (donations.isEmpty()) {
+            System.out.println("No donations available.");
+            return;
+        }
         for (Donation donation : donations) {
             if (!donation.isClaimed()) {
                 System.out.println(donation);
             }
         }
     }
+
     @Override
     public void viewProfile() {
         System.out.println("Recipient Name: " + this.name);

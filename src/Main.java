@@ -1,5 +1,3 @@
-package main;
-
 import models.Donor;
 import models.Recipient;
 import models.Donation;
@@ -15,6 +13,10 @@ public class Main {
         List<Donation> donations = new ArrayList<>();
         Donor donor = new Donor(1, "Alice", "alice@example.com", "password123");
         Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
+
+        // Register a donation for testing
+        donations.add(new Donation(1, "Apples", 10.0, "KG", LocalDate.of(2024, 10, 1)));
+        donations.add(new Donation(2, "Bread", 5.0, "KG", LocalDate.of(2024, 9, 30)));
 
         while (true) {
             System.out.println("\n=== Food Donation App ===");
