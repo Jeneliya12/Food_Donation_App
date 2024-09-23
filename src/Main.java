@@ -1,3 +1,5 @@
+package main;
+
 import models.Donor;
 import models.Recipient;
 import models.Donation;
@@ -10,53 +12,111 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        // Create a list to store donations
         List<Donation> donations = new ArrayList<>();
-
-        // Create a donor
         Donor donor = new Donor(1, "Alice", "alice@example.com", "password123");
-        donor.viewProfile();
+        Recipient recipient = new Recipient(2, "Bob", "bob@example.com", "password456");
 
-        // Get donation details from the user
-        System.out.println("Enter donation ID:");
-        int donationId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        while (true) {
+            System.out.println("\n=== Food Donation App ===");
+            System.out.println("1. Donor Options");
+            System.out.println("2. Recipient Options");
+            System.out.println("3. Exit");
+            System.out.print("Please choose an option: ");
 
-        System.out.println("Enter food type:");
-        String foodType = scanner.nextLine();
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        System.out.println("Enter quantity:");
-        double quantity = scanner.nextDouble();
-        scanner.nextLine(); // Consume newline
+            switch (choice) {
+                case 1:
+                    donorMenu(donor, donations, scanner);
+                    break;
+                case 2:
+                    recipientMenu(recipient, donations, scanner);
+                    break;
+                case 3:
+                    System.out.println("Thank you for using the Food Donation App!");
+                    return; // Exit the application
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
 
-        System.out.println("Enter unit:");
-        String unit = scanner.nextLine();
+    private static void donorMenu(Donor donor, List<Donation> donations, Scanner scanner) {
+        while (true) {
+            System.out.println("\n=== Donor Menu ===");
+            System.out.println("1. View Profile");
+            System.out.println("2. Register Donation");
+            System.out.println("3. View Donations");
+            System.out.println("4. Back to Main Menu");
+            System.out.print("Please choose an option: ");
 
-        System.out.println("Enter expiration date (YYYY-MM-DD):");
-        String dateInput = scanner.nextLine();
-        LocalDate expirationDate = LocalDate.parse(dateInput);
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        // Register the donation
-        donor.registerDonation(donationId, foodType, quantity, unit, expirationDate);
+            switch (choice) {
+                case 1:
+                    donor.viewProfile();
+                    break;
+                case 2:
+                    System.out.print("Enter Donation ID: ");
+                    int donationId = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter Food Type: ");
+                    String foodType = scanner.nextLine();
+                    System.out.print("Enter Quantity: ");
+                    double quantity = scanner.nextDouble();
+                    System.out.print("Enter Unit: ");
+                    String unit = scanner.next();
+                    System.out.print("Enter Expiration Date (YYYY-MM-DD): ");
+                    LocalDate expirationDate = LocalDate.parse(scanner.next());
+                    donor.registerDonation(donationId, foodType, quantity, unit, expirationDate);
+                    break;
+                case 3:
+                    donor.viewDonations();
+                    break;
+                case 4:
+                    return; // Go back to main menu
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
 
-        // Add the donation to the list
-        donations.add(new Donation(donationId, foodType, quantity, unit, expirationDate));
+    private static void recipientMenu(Recipient recipient, List<Donation> donations, Scanner scanner) {
+        while (true) {
+            System.out.println("\n=== Recipient Menu ===");
+            System.out.println("1. View Profile");
+            System.out.println("2. View Available Donations");
+            System.out.println("3. Claim Donation");
+            System.out.println("4. Back to Main Menu");
+            System.out.print("Please choose an option: ");
 
-        // Get recipient details from the user
-        System.out.println("Enter recipient ID:");
-        int recipientId = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        System.out.println("Enter recipient name:");
-        String recipientName = scanner.nextLine();
-
-        Recipient recipient = new Recipient(recipientId, recipientName, "recipient@example.com", "password456");
-        recipient.viewProfile();
-
-        // View available donations
-        recipient.viewAvailableDonations(donations);
-
-        scanner.close();
+            switch (choice) {
+                case 1:
+                    recipient.viewProfile();
+                    break;
+                case 2:
+                    recipient.viewAvailableDonations(donations);
+                    break;
+                case 3:
+                    System.out.print("Enter Donation ID to claim: ");
+                    int claimId = scanner.nextInt();
+                    for (Donation donation : donations) {
+                        if (donation.getDonationId() == claimId) {
+                            recipient.claimDonation(donation);
+                            break;
+                        }
+                    }
+                    break;
+                case 4:
+                    return; // Go back to main menu
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
     }
 }
