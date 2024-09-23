@@ -46,4 +46,11 @@ public class Donation {
     public LocalDate getExpirationDate() {
         return expirationDate;
     }
+
+    @Override
+    public String toString() {
+        return "Donation ID: " + donationId + ", Food Type: " + foodType +
+                ", Quantity: " + quantity + " " + unit + ", Expiration Date: " + expirationDate +
+                ", Claimed: " + isClaimed;
+    }
 }
