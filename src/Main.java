@@ -1,6 +1,8 @@
-import models.Donor;
-import models.Recipient;
-import models.Donation;
+import Data.Impl.DonationImpl;
+import Data.models.Donation;
+import Data.models.Donor;
+import Data.models.Recipient;
+import Data.Interface.UserInterface;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,169 +12,209 @@ import java.util.Scanner;
 public class Main {
     private static final List<Donor> donors = new ArrayList<>();
     private static final List<Recipient> recipients = new ArrayList<>();
+    private static final List<Donation> donations = new ArrayList<>();
+    private static final DonationImpl donationService = new DonationImpl(donations);
 
     static {
         donors.add(new Donor(1, "Jenny", "jenny@gmail.com", "pwd123"));
-
+        donors.add(new Donor(2, "Milesca", "milesca@gmail.com", "pwd123"));
         recipients.add(new Recipient(1, "Milli", "milli@gmail.com", "pwd789"));
+        recipients.add(new Recipient(2, "John", "john@gmail.com", "pwd789"));
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Donation> donations = new ArrayList<>();
+        boolean running = true;
 
-        while (true) {
-            System.out.println("\n=== Food Donation App ===");
+        // Main menu loop
+        while (running) {
+            System.out.println("\n===== Welcome to the Donation App =====");
             System.out.println("1. Donor Login");
             System.out.println("2. Recipient Login");
             System.out.println("3. Exit");
-            System.out.print("Please choose an option: ");
+            System.out.print("Choose an option: ");
+            int userTypeChoice = scanner.nextInt();
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
-            switch (choice) {
+            switch (userTypeChoice) {
                 case 1:
-                    Donor donor = loginDonor(scanner);
-                    if (donor != null) {
-                        donorMenu(donor, donations, scanner);
-                    }
+                    donorLogin(scanner);
                     break;
                 case 2:
-                    Recipient recipient = loginRecipient(scanner);
-                    if (recipient != null) {
-                        recipientMenu(recipient, donations, scanner);
-                    }
+                    recipientLogin(scanner);
                     break;
                 case 3:
-                    System.out.println("Thank you for using the Food Donation App!");
-                    return; // Exit the application
+                    System.out.println("Thank you for using the Donation App! Goodbye!");
+                    running = false;
+                    break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
-    private static Donor loginDonor(Scanner scanner) {
-        System.out.print("Enter your email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
+    private static void donorLogin(Scanner scanner) {
+        scanner.nextLine(); // Consume the newline left-over
+        UserInterface currentUser = authenticateUser(scanner, "donor");
+        if (currentUser != null) {
+            donorMenu(scanner, donationService, (Donor) currentUser);
+        } else {
+            System.out.println("Authentication failed. Exiting...");
+        }
+    }
 
-        for (Donor donor : donors) {
-            // Use getEmail() instead of accessing email directly
-            if (donor.getEmail().equals(email) && donor.getPassword().equals(password)) {
-                System.out.println("Login successful! Welcome, " + donor.getName());
-                return donor;
+    private static void recipientLogin(Scanner scanner) {
+        scanner.nextLine(); // Consume the newline left-over
+        UserInterface currentUser = authenticateUser(scanner, "recipient");
+        if (currentUser != null) {
+            recipientMenu(scanner, donationService, (Recipient) currentUser);
+        } else {
+            System.out.println("Authentication failed. Exiting...");
+        }
+    }
+
+    private static UserInterface authenticateUser(Scanner scanner, String userType) {
+        System.out.println("===== User Authentication =====");
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine(); // Read email input
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine(); // Read password input
+
+        if (userType.equals("donor")) {
+            for (Donor donor : donors) {
+                if (donor.getEmail().equals(email) && donor.getPassword().equals(password)) {
+                    return donor;
+                }
+            }
+        } else if (userType.equals("recipient")) {
+            for (Recipient recipient : recipients) {
+                if (recipient.getEmail().equals(email) && recipient.getPassword().equals(password)) {
+                    return recipient;
+                }
             }
         }
 
-        System.out.println("Invalid email or password.");
-        return null;
+        return null; // User not found
     }
 
-    private static Recipient loginRecipient(Scanner scanner) {
-        System.out.print("Enter your email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
-
-        for (Recipient recipient : recipients) {
-            // Use getEmail() instead of accessing email directly
-            if (recipient.getEmail().equals(email) && recipient.getPassword().equals(password)) {
-                System.out.println("Login successful! Welcome, " + recipient.getName());
-                return recipient;
-            }
-        }
-
-        System.out.println("Invalid email or password.");
-        return null;
-    }
-
-
-    private static void donorMenu(Donor donor, List<Donation> donations, Scanner scanner) {
+    private static void donorMenu(Scanner scanner, DonationImpl donationService, Donor currentUser) {
         while (true) {
-            System.out.println("\n=== Donor Menu ===");
-            System.out.println("1. View Profile");
-            System.out.println("2. Register Donation");
-            System.out.println("3. View Donations");
-            System.out.println("4. Back to Main Menu");
-            System.out.print("Please choose an option: ");
-
+            System.out.println("\n===== Donor Menu =====");
+            System.out.println("1. Register a Donation");
+            System.out.println("2. View My Donations");
+            System.out.println("3. View My Profile");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
 
             switch (choice) {
                 case 1:
-                    donor.viewProfile();
+                    registerDonation(scanner, donationService, currentUser);
                     break;
                 case 2:
-                    System.out.print("Enter Donation ID: ");
-                    int donationId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline
-                    System.out.print("Enter Food Type: ");
-                    String foodType = scanner.nextLine();
-                    System.out.print("Enter Quantity: ");
-                    double quantity = scanner.nextDouble();
-                    System.out.print("Enter Unit: ");
-                    String unit = scanner.next();
-                    System.out.print("Enter Expiration Date (YYYY-MM-DD): ");
-                    LocalDate expirationDate = LocalDate.parse(scanner.next());
-
-                    // Create new donation and add it to the shared list
-                    Donation newDonation = new Donation(donationId, foodType, quantity, unit, expirationDate);
-                    donations.add(newDonation);
-                    System.out.println("Donation registered successfully");
+                    viewMyDonations(donationService, currentUser);
                     break;
                 case 3:
-                    donor.viewDonations(donations);
+                    viewDonorProfile(currentUser);
                     break;
                 case 4:
-                    return; // Go back to main menu
+                    System.out.println("Thank you for using the Donation App! Goodbye!");
+                    return; // Exit
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
-    private static void recipientMenu(Recipient recipient, List<Donation> donations, Scanner scanner) {
+    private static void recipientMenu(Scanner scanner, DonationImpl donationService, Recipient currentRecipient) {
         while (true) {
-            System.out.println("\n=== Recipient Menu ===");
-            System.out.println("1. View Profile");
-            System.out.println("2. View Available Donations");
-            System.out.println("3. Claim Donation");
-            System.out.println("4. View Claimed Donations");
-            System.out.println("5. Back to Main Menu");
-            System.out.print("Please choose an option: ");
-
+            System.out.println("\n===== Recipient Menu =====");
+            System.out.println("1. View Available Donations");
+            System.out.println("2. Claim a Donation");
+            System.out.println("3. View Profile");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
 
             switch (choice) {
                 case 1:
-                    recipient.viewProfile();
+                    donationService.viewDonationStatus();
                     break;
                 case 2:
-                    recipient.viewAvailableDonations(donations);
+                    claimDonation(scanner, donationService, currentRecipient);
                     break;
                 case 3:
-                    System.out.print("Enter Donation ID to claim: ");
-                    int claimId = scanner.nextInt();
-                    for (Donation donation : donations) {
-                        if (donation.getDonationId() == claimId) {
-                            recipient.claimDonation(donation);
-                            break;
-                        }
-                    }
+                    viewRecipientProfile(currentRecipient);
                     break;
                 case 4:
-                    recipient.viewClaimedDonations();
-                    break;
-                case 5:
-                    return;
+                    System.out.println("Thank you for using the Donation App! Goodbye!");
+                    return; // Exit
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println("Invalid choice. Please try again.");
             }
+        }
+    }
+
+    private static void registerDonation(Scanner scanner, DonationImpl donationService, Donor currentUser) {
+        scanner.nextLine(); // Consume newline left-over
+        System.out.println("\n===== Register Donation =====");
+        System.out.print("Enter food type: ");
+        String foodType = scanner.nextLine();
+        System.out.print("Enter quantity: ");
+        double quantity = scanner.nextDouble();
+        System.out.print("Enter unit (e.g., kg): ");
+        String unit = scanner.next();
+        System.out.print("Enter expiration date (YYYY-MM-DD): ");
+        LocalDate expirationDate = LocalDate.parse(scanner.next());
+
+        // Create a new donation associated with the current user
+        Donation donation = new Donation(donationService.getDonations().size() + 1, foodType, quantity, unit, expirationDate, currentUser.getId());
+        donationService.registerDonation(donation);
+        System.out.println("Donation registered successfully!");
+    }
+
+    private static void claimDonation(Scanner scanner, DonationImpl donationService, Recipient currentRecipient) {
+        donationService.viewDonationStatus();
+        System.out.print("Enter Donation ID to claim: ");
+        int donationId = scanner.nextInt();
+        Donation donation = donationService.getDonations().stream()
+                .filter(d -> d.getDonationId() == donationId)
+                .findFirst()
+                .orElse(null);
+
+        if (donation != null && !donation.isClaimed()) {
+            donationService.claimDonation(donation, currentRecipient);
+            System.out.println("Donation claimed successfully!");
+        } else {
+            System.out.println("Invalid donation ID or donation already claimed.");
+        }
+    }
+
+    private static void viewDonorProfile(UserInterface currentUser) {
+        if (currentUser instanceof Donor donor) {
+            System.out.println("\n===== Donor Profile =====");
+            System.out.println("Name: " + donor.getName());
+            System.out.println("Email: " + donor.getEmail());
+        } else {
+            System.out.println("No profile information available.");
+        }
+    }
+
+    private static void viewRecipientProfile(Recipient recipient) {
+        System.out.println("\n===== Recipient Profile =====");
+        System.out.println("Name: " + recipient.getName());
+        System.out.println("Email: " + recipient.getEmail());
+    }
+
+    private static void viewMyDonations(DonationImpl donationService, Donor currentUser) {
+        System.out.println("\n===== My Donations =====");
+        List<Donation> myDonations = donationService.getDonations().stream()
+                .filter(donation -> donation.getDonorId() == currentUser.getId()) // Filter by current donor's ID
+                .toList();
+
+        if (myDonations.isEmpty()) {
+            System.out.println("No donations available.");
+        } else {
+            myDonations.forEach(System.out::println);
         }
     }
 }

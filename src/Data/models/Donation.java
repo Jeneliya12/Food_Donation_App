@@ -1,4 +1,4 @@
-package models;
+package Data.models;
 
 import java.time.LocalDate;
 
@@ -8,21 +8,27 @@ public class Donation {
     private final double quantity;
     private final String unit;
     private final LocalDate expirationDate;
+    private final int donorId; // Marked final to ensure it doesn't change after initialization
     private boolean isClaimed;
-    private Recipient claimedBy; // Add claimedBy field
+    private Recipient claimedBy;
 
-    public Donation(int donationId, String foodType, double quantity, String unit, LocalDate expirationDate) {
+    public Donation(int donationId, String foodType, double quantity, String unit, LocalDate expirationDate, int donorId) {
         this.donationId = donationId;
         this.foodType = foodType;
         this.quantity = quantity;
         this.unit = unit;
         this.expirationDate = expirationDate;
+        this.donorId = donorId; // Set donorId in the constructor
         this.isClaimed = false;
-        this.claimedBy = null; // Initially no recipient
+        this.claimedBy = null;
     }
 
     public int getDonationId() {
         return donationId;
+    }
+
+    public int getDonorId() {
+        return donorId; // Getter for donorId
     }
 
     public String getFoodType() {
