@@ -3,32 +3,31 @@ package Data.models;
 import java.time.LocalDate;
 
 public class Donation {
-    private final int donationId;
+    private final int id;
+    private final int donorId;
     private final String foodType;
     private final double quantity;
     private final String unit;
     private final LocalDate expirationDate;
-    private final int donorId; // Marked final to ensure it doesn't change after initialization
     private boolean isClaimed;
     private Recipient claimedBy;
 
-    public Donation(int donationId, String foodType, double quantity, String unit, LocalDate expirationDate, int donorId) {
-        this.donationId = donationId;
+    public Donation(int id, int donorId, String foodType, double quantity, String unit, LocalDate expirationDate) {
+        this.id = id;
+        this.donorId = donorId;
         this.foodType = foodType;
         this.quantity = quantity;
         this.unit = unit;
         this.expirationDate = expirationDate;
-        this.donorId = donorId; // Set donorId in the constructor
         this.isClaimed = false;
-        this.claimedBy = null;
     }
 
     public int getDonationId() {
-        return donationId;
+        return id;
     }
 
     public int getDonorId() {
-        return donorId; // Getter for donorId
+        return donorId;
     }
 
     public String getFoodType() {
@@ -65,7 +64,8 @@ public class Donation {
 
     @Override
     public String toString() {
-        return "Donation ID: " + donationId +
+        return "Donation ID: " + id +
+                ", Donor ID: " + donorId +
                 ", Food Type: " + foodType +
                 ", Quantity: " + quantity + " " + unit +
                 ", Expiration Date: " + expirationDate +

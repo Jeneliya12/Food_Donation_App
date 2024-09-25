@@ -5,6 +5,7 @@ import Data.models.Donation;
 import Data.models.Recipient;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DonationImpl implements DonationInterface {
     private final List<Donation> donations;
@@ -16,7 +17,6 @@ public class DonationImpl implements DonationInterface {
     @Override
     public void registerDonation(Donation donation) {
         donations.add(donation);
-        System.out.println("Donation registered successfully!");
     }
 
     @Override
@@ -25,7 +25,6 @@ public class DonationImpl implements DonationInterface {
             donation.setClaimedBy(recipient);
             donation.setClaimed(true);
             recipient.getClaimedDonations().add(donation);
-            System.out.println("Donation claimed successfully!");
         } else {
             System.out.println("This donation has already been claimed.");
         }
@@ -41,11 +40,21 @@ public class DonationImpl implements DonationInterface {
 
         for (Donation donation : donations) {
             String status = donation.isClaimed() ? "Claimed" : "Available";
-            System.out.println("Donation ID: " + donation.getDonationId() + " - Food Type: " + donation.getFoodType() + " - Status: " + status);
+            System.out.println("Food Type: " + donation.getFoodType());
+            System.out.println("Quantity: " + donation.getQuantity() + donation.getUnit());
+            System.out.println("Expiration Date: " + donation.getExpirationDate());
+            System.out.println("Status: " + status);
+            System.out.println();
         }
     }
 
     public List<Donation> getDonations() {
         return donations;
+    }
+
+    public List<Donation> getDonationsByDonorId(int donorId) {
+        return donations.stream()
+                .filter(donation -> donation.getDonorId() == donorId)
+                .collect(Collectors.toList());
     }
 }

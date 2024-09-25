@@ -15,7 +15,10 @@ public class DonorImpl implements DonorInterface {
 
     @Override
     public void viewProfile() {
-        donor.viewProfile();
+        System.out.println("Donor Profile:");
+        System.out.println("ID: " + donor.getId());
+        System.out.println("Name: " + donor.getName());
+        System.out.println("Email: " + donor.getEmail());
     }
 
     @Override
@@ -26,7 +29,15 @@ public class DonorImpl implements DonorInterface {
             return;
         }
         for (Donation donation : donations) {
-            System.out.println(donation);
+            System.out.println("Food Type: " + donation.getFoodType());
+            System.out.println("Quantity: " + donation.getQuantity() + donation.getUnit());
+            System.out.println("Expiration Date: " + donation.getExpirationDate());
+            System.out.println("Status: " + (donation.isClaimed() ? "Claimed" : "Available"));
+            System.out.println();
         }
+    }
+
+    public Donor getDonor() {
+        return donor;
     }
 }

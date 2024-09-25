@@ -6,7 +6,6 @@ public class User {
     protected String email;
     protected String password;
 
-    // Constructor
     public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
@@ -14,9 +13,8 @@ public class User {
         this.password = password;
     }
 
-    // Getter for ID
     public int getId() {
-        return id;  // Add this method to retrieve the ID
+        return id;
     }
 
     public String getEmail() {
@@ -31,10 +29,15 @@ public class User {
         return name;
     }
 
-    public void viewProfile() {
-        System.out.println("User Profile:");
-        System.out.println("ID: " + getId());  // Optionally display ID
-        System.out.println("Name: " + getName());
-        System.out.println("Email: " + getEmail());
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
