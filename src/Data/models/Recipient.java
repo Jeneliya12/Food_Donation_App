@@ -1,10 +1,9 @@
 package Data.models;
 
-import Data.Interface.UserInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recipient extends User implements UserInterface{
+public class Recipient extends User {
     private final List<Donation> claimedDonations;
 
     public Recipient(int id, String name, String email, String password) {

@@ -6,7 +6,7 @@ import Data.Impl.RecipientImpl;
 import Data.models.Donation;
 import Data.models.Donor;
 import Data.models.Recipient;
-import Data.Interface.UserInterface;
+import Data.models.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,8 +57,8 @@ public class Client {
 
     private static void donorLogin(Scanner scanner) {
         scanner.nextLine();
-        UserInterface currentUser = authenticateUser(scanner, "donor");
-        if (currentUser != null) {
+        User currentUser = authenticateUser(scanner, "donor");
+        if (currentUser != null && currentUser instanceof Donor) {
             donorMenu(scanner, donationService, (Donor) currentUser);
         } else {
             System.out.println("Authentication failed. Exiting...");
@@ -67,16 +67,16 @@ public class Client {
 
     private static void recipientLogin(Scanner scanner) {
         scanner.nextLine();
-        UserInterface currentUser = authenticateUser(scanner, "recipient");
-        if (currentUser != null) {
-            RecipientImpl recipientImpl = new RecipientImpl((Recipient) currentUser); // Create RecipientImpl instance
+        User currentUser = authenticateUser(scanner, "recipient");
+        if (currentUser != null && currentUser instanceof Recipient) {
+            RecipientImpl recipientImpl = new RecipientImpl((Recipient) currentUser);
             recipientMenu(scanner, donationService, recipientImpl);
         } else {
             System.out.println("Authentication failed. Exiting...");
         }
     }
 
-    private static UserInterface authenticateUser(Scanner scanner, String userType) {
+    private static User authenticateUser(Scanner scanner, String userType) {
         System.out.println("===== User Authentication =====");
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
